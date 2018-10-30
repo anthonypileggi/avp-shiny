@@ -1,0 +1,26 @@
+version: "3.0"
+
+services:
+  shiny:
+    container_name: shiny
+    # To build the image locally, comment out "image" below, and uncomment
+    # "build" and the lines indented under it.
+    # image: rocker/shiny
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    user: 'root'
+    # Uncomment the lines below to disable application logs STDOUT output
+    # environment:
+    #   - APPLICATION_LOGS_TO_STDOUT=false
+    ports:
+      - '80:3838'
+    volumes:
+      - 'shiny_logs:/var/log/shiny-server'
+      #- './mountpoints/apps:/srv/shiny-server'
+      #- './shiny:/srv/shiny-server'
+      - './matching-game:/srv/shiny-server/matching-game'
+
+volumes:
+  shiny_logs:
