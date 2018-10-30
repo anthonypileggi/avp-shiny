@@ -1,18 +1,11 @@
-#
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
 
-library(shiny)
-
-# Define server logic required to draw a histogram
 shinyServer(function(input, output) {
    
-  rv <- reactiveValues(coords = tibble::tibble(i = integer(), j = integer(), id = integer(), item = character()))
+  rv <- 
+    reactiveValues(
+      click = tibble::tibble(i = integer(), j = integer(), id = integer(), item = character()),
+      hover = tibble::tibble(i = integer(), j = integer(), id = integer(), item = character())
+      )
   
   # input list of matching items
   items <- reactive({
@@ -49,20 +42,31 @@ shinyServer(function(input, output) {
   })
   
   observeEvent(input$game_click, {
-    new_coords <- game_df() %>%
+    new_click <- game_df() %>%
       dplyr::filter(
         input$game_click$x > i - .5,
         input$game_click$x < i + .5,
         input$game_click$y > j - .5,
         input$game_click$y < j + .5
       )
-    rv$coords <- dplyr::bind_rows(rv$coords, new_coords)
+    rv$click <- dplyr::bind_rows(rv$click, new_click)
+  })
+  
+  observeEvent(input$game_hover, {
+    rv$hover <- game_df() %>%
+      dplyr::filter(
+        input$game_hover$x > i - .5,
+        input$game_hover$x < i + .5,
+        input$game_hover$y > j - .5,
+        input$game_hover$y < j + .5
+      )
   })
   
   # plot gameboard
   output$gameboard <- renderPlot({
     gameboard() +
-      geom_text(aes(label = item), size = 14, data = rv$coords)
+      geom_tile(color = "black", fill = "blue", alpha = .5, data = rv$hover) +
+      geom_text(aes(label = item), size = 14, data = rv$click)
   })
   
   # click coords
