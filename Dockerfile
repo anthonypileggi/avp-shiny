@@ -3,7 +3,6 @@ MAINTAINER Anthony Pileggi (apileggi20@gmail.com)
 
 # install cron and R package dependencies
 RUN apt-get update && apt-get install -y \
-    libssl-dev \
     cron \
     git \
     ## clean up
@@ -15,6 +14,7 @@ RUN apt-get update && apt-get install -y \
 RUN install2.r --error \ 
     -r 'http://cran.rstudio.com' \
     tidyverse \
+    shinyjs \
     ## clean up
     && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
     
