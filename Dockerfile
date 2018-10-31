@@ -1,8 +1,9 @@
-FROM rocker/shiny
+FROM rocker/shiny-verse
 MAINTAINER Anthony Pileggi (apileggi20@gmail.com)
 
 # install cron and R package dependencies
 RUN apt-get update && apt-get install -y \
+    libssl-dev \
     cron \
     git \
     ## clean up
