@@ -27,4 +27,5 @@ RUN sudo service cron start
 
 # copy shiny files to the server (assume they are in build folder)
 COPY ./matching-game/ /srv/shiny-server/matching-game/
+COPY ./matching-game-2/ /srv/shiny-server/matching-game-2/
 #COPY ./shiny/ /srv/shiny-server/myapp/
