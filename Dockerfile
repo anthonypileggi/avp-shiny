@@ -26,5 +26,5 @@ RUN sudo service cron start
 #RUN git clone git@github.com:anthonypileggi/avp-shiny.git
 
 # copy shiny files to the server (assume they are in build folder)
-#COPY ./matching-game/ /srv/shiny-server/myapp/
-COPY ./shiny/ /srv/shiny-server/matching-game/
+COPY ./matching-game/ /srv/shiny-server/matching-game/
+#COPY ./shiny/ /srv/shiny-server/myapp/
