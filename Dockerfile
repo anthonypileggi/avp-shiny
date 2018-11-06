@@ -16,6 +16,7 @@ RUN install2.r --error \
     -r 'http://cran.rstudio.com' \
     tidyverse \
     shinyjs \
+    shinymaterial \
     ## clean up
     && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
     
@@ -27,8 +28,7 @@ RUN sudo service cron start
 
 # copy shiny files to the server (assume they are in build folder)
 COPY ./matching-game/ /srv/shiny-server/matching-game/
-COPY ./matching-game-2/ /srv/shiny-server/matching-game-2/
-COPY ./matching-game-3/ /srv/shiny-server/matching-game-3/
+COPY ./octopath-traveler/ /srv/shiny-server/octopath-traveler/
 #COPY ./shiny/ /srv/shiny-server/myapp/
 
 # copy password-protection file
