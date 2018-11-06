@@ -2,6 +2,9 @@ shinyUI(fluidPage(
   
   useShinyjs(),
   
+  # -- Add Tracking JS File 
+  tags$head(includeScript("google-analytics.js")),
+  
   titlePanel("Matching Game"),
   
   sidebarLayout(

@@ -1,4 +1,6 @@
 material_page(
+
+  tags$head(includeScript("google-analytics.js")),
   title = "octopath traveler",
   nav_bar_color = "orange darken-4",
   tags$br(),
