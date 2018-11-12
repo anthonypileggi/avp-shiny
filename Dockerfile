@@ -17,6 +17,7 @@ RUN install2.r --error \
     tidyverse \
     shinyjs \
     shinymaterial \
+    DT \
     ## clean up
     && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
     
