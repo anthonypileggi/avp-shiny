@@ -17,6 +17,7 @@ RUN install2.r --error \
     tidyverse \
     shinyjs \
     shinymaterial \
+    shinydashboard \
     DT \
     plotly \
     ## clean up
