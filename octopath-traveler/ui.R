@@ -41,39 +41,19 @@ material_page(
             choices = unique(x$stat)
           ),
           material_slider(
-            input_id = "min_level",
-            label = "Min. Level",
+            input_id = "level",
+            label = "Level",
             min_value = 1,
             max_value = 99,
             initial_value = 1
-          ),
-          material_slider(
-            input_id = "max_level",
-            label = "Max. Level",
-            min_value = 1,
-            max_value = 99,
-            initial_value = 99
-          ),
-          material_dropdown(
-            input_id = "level",
-            label = "Level",
-            choices = unique(x$level),
-            selected = 1
           )
         )
       ),
       material_column(
-        width = 7,
+        width = 10,
         material_card(
           depth = 4,
-          plotOutput("plot_stat_vs_level")
-        )
-      ),
-      material_column(
-        width = 3,
-        material_card(
-          depth = 4,
-          plotOutput("plot_stats_this_level")
+          plotlyOutput("plot_stat_vs_level")
         )
       ),
       material_column(

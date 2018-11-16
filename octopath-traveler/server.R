@@ -1,15 +1,41 @@
-function(input, output) {
+
+function(input, output, session) {
   
-  output$plot_stat_vs_level <- renderPlot({
-    plot_output <- x %>%
+  # Reactives ---------------------------
+  
+  data <- reactive({
+    x %>%
       dplyr::filter(
-        stat %in% input$stat,
-        level >= input$min_level,
-        level <= input$max_level
-        ) %>%
+        stat %in% input$stat
+      )
+  })
+  
+  # respond to plotly click
+  selected_level <- reactive({
+    event_data("plotly_click")$x
+  })
+  observeEvent(selected_level(), {
+    update_material_slider(session, "level", value = selected_level())
+  })
+  
+  
+  # Outputs --------------------------
+
+  output$plot_stat_vs_level <- renderPlotly({
+    g <- data() %>%
+      mutate(
+        text = stringr::str_c(
+          name,
+          "<br>Level ",
+          level,
+          "<br>",
+          input$stat,
+          " = ",
+          scales::comma(value)
+        )
+      ) %>%
       ggplot(aes(x = level, y = value, color = name, group = name)) + 
-      geom_line() + 
-      geom_point() +
+      geom_line(aes(text = text)) + 
       geom_vline(xintercept = as.numeric(input$level), linetype = "dashed") +
       labs(
         x = "Level", y = NULL, color = "Character",
@@ -21,9 +47,10 @@ function(input, output) {
         plot.title = element_text(hjust = .5)
       )
 
-    plot_output
+    ggplotly(g, tooltip = "text")
   })
   
+  # this is not used right now...
   output$plot_stats_this_level <- renderPlot({
     x %>% 
       dplyr::filter(level == input$level) %>% 
@@ -51,4 +78,5 @@ function(input, output) {
       ) %>%
       DT::formatRound(unique(x$stat), digits = 0)
   })
+
 }
