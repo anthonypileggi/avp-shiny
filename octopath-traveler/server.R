@@ -79,4 +79,51 @@ function(input, output, session) {
       DT::formatRound(unique(x$stat), digits = 0)
   })
 
+  
+  # Character Comparison Tool -------------
+  
+  output$table_similar <- DT::renderDataTable({
+    req(selected_chars())
+    c1 <- selected_chars()[1]
+    c2 <- selected_chars()[2]
+    xt <- x %>% 
+      filter(
+        level == input$level2, 
+        name %in% selected_chars()
+        ) %>% 
+      select(-level) %>% 
+      spread(name, value)
+    xt$Diff <- xt[[c1]] - xt[[c2]]
+    
+    DT::datatable(
+      xt,
+      rownames = FALSE,  
+      options = list(dom = "t", pageLength = 10)
+    ) %>%
+      DT::formatRound(selected_chars(), digits = 0)
+  })
+  
+  output$plot_similar <- renderPlotly({
+    g <- results %>% 
+      group_by(name1, name2) %>% 
+      summarize(same = sum(diff == 0)) %>% 
+      arrange(same) %>% 
+      ggplot(aes(x = name1, y = name2, fill = same)) + 
+      geom_tile() + 
+      geom_text(aes(label = same)) + 
+      scale_fill_gradient(low = "white", high = "green", guide = FALSE) + 
+      labs(x = NULL, y = NULL) + 
+      theme_bw()
+    ggplotly(g, tooltip = "text", source = "similar")
+  })
+  
+  # respond to plotly click
+  selected_chars <- reactive({
+    s <- event_data("plotly_click", source = "similar")
+    if (!is.null(s)) {
+      unique(x$name)[c(s$x, s$y)]
+    } else {
+      c("Alfyn", "Cyrus")
+    }
+  })
 }

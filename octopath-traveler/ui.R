@@ -22,7 +22,7 @@ material_page(
   material_tabs(
     tabs = c(
       "Character Explorer" = "first_tab",
-      "Character Similarities (Coming soon)" = "second_tab",
+      "Character Comparison Tool" = "second_tab",
       "Nut Distributor (Coming soon)" = "third_tab"
     )
   ),
@@ -66,5 +66,39 @@ material_page(
         )
       )
     )
+  ),
+  
+  material_tab_content(
+    tab_id = "second_tab",
+    material_row(
+      material_column(
+        width = 4,
+        material_card(
+          depth = 4,
+          material_slider(
+            input_id = "level2",
+            label = "Level",
+            min_value = 1,
+            max_value = 99,
+            initial_value = 1
+          )
+        ),
+        material_card(
+          depth = 4,
+          div(style = "font-size:75%",
+            DT::dataTableOutput("table_similar")
+          )
+        )
+      ),
+      material_column(
+        width = 8,
+        material_card(
+          title = "Character Similarity Matrix",
+          depth = 4,
+          plotlyOutput("plot_similar", height = 600)
+        )
+      )
+    )
   )
+  
 )
